@@ -61,8 +61,7 @@ test_iter = torch.utils.data.DataLoader(dataset=test_set,
 time_ = time.strftime("%Y-%m-%d-%H:%M:%S", time.localtime())
 init_logger(log_file=config.output_dir + f'/{config.model_type}-{time_}.log')
 
-if config.cuda and torch.cuda.is_available():
-    training_set.weight = training_set.weight.cuda()
+
 model = HAN_Model( gru_size = config.gru_size,class_num=config.class_num)
 if config.cuda and torch.cuda.is_available():
     model.cuda()
