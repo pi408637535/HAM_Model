@@ -33,6 +33,13 @@ def ArgumentParser():
     parser.add_argument("--fp16_opt_level", type=str, default="O1",
                         help="For fp16: Apex AMP optimization level selected in ['O0', 'O1', 'O2', and 'O3']."
                              "See details at https://nvidia.github.io/apex/amp.html", )
-
+    parser.add_argument("--logging_steps", type=int, default=50, help="Log every X updates steps.")
+    parser.add_argument("--output_dir", default=None, type=str, required=True,
+                        help="The output directory where the model predictions and checkpoints will be written.", )
+    parser.add_argument("--model_type", default=None, type=str, required=True,
+                        help="Model type selected in the list: ")
+    parser.add_argument("--local_rank", type=int, default=-1, help="For distributed training: local_rank")
+    parser.add_argument("--max_grad_norm", default=1.0, type=float, help="Max gradient norm.")
+    parser.add_argument("--save_steps", type=int, default=50, help="Save checkpoint every X updates steps.")
 
     return parser.parse_args()

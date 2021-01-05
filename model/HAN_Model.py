@@ -25,17 +25,17 @@ class HAN_Model(nn.Module):
         self.classifier = nn.Linear(2*gru_size, class_num)
 
     def forward(self, x, mask, segment,gpu=False):
-        sentence_num = x.shape[1]
+        sentence_num = x.shape[1] #x:b,p,s
         sentence_length = x.shape[2]
         batch = x.shape[0]
-        x_embedding = torch.zeros([batch, sentence_length, sentence_num, self.hidden_size])
+        x_embedding = torch.zeros([batch, sentence_num, sentence_length, self.hidden_size])
 
         if gpu:
             x_embedding = x_embedding.cuda()
 
-        for i in range(sentence_length):
-            outputs = self.bert(input_ids=x[:,i,...], attention_mask=mask[:,i,...], token_type_ids=segment[:,i,...])
-            x_embedding[..., i, :] = outputs[0]
+        for i in range(sentence_num):
+            outputs = self.bert(input_ids=x[:,i,...], attention_mask=mask[:,i,...], token_type_ids=segment[:,i,...]) # b,s,e
+            x_embedding[:, i, ...] = outputs[0]
 
         x_embedding = x_embedding.view([-1, sentence_length, self.hidden_size]) #b,p,s,h->b*p,s,h
         mask = mask.view([-1, sentence_length]) #mask: b*p,s

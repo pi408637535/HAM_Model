@@ -43,6 +43,8 @@ class IMDB_Data(data.DataLoader):
         labels = []
         with codecs.open(self.path+self.data_name, "r", encoding="utf-8") as fin:
             for ele in fin:
+                if len(ele) < 10:
+                    continue
                 data,label = ele.split("\t")
                 data = data.split()
                 if not data:
