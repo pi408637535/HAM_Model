@@ -183,7 +183,7 @@ for epoch in range(config.epoch):
             out = model(data,maks,segment)
 
         if not len(label.shape):
-            data = torch.unsqueeze(data, dim=-1)
+            label = torch.unsqueeze(label, dim=-1)
             logger.info("batch {0}, {1}".format(out.shape, label.shape))
 
         loss_now = criterion(out, autograd.Variable(label.long()))
