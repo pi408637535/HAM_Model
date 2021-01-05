@@ -30,11 +30,17 @@ def get_test_result(data_iter,data_set):
     for data, maks, segment, label in data_iter:
         if config.cuda and torch.cuda.is_available():
             data = data.cuda()
+            maks = maks.cuda()
+            segment = segment.cuda()
+
             label = label.cuda()
         else:
             data = torch.autograd.Variable(data).long()
+            maks = torch.autograd.Variable(maks).long()
+            segment = torch.autograd.Variable(segment).long()
+
         if config.cuda and torch.cuda.is_available():
-            out = model(data, gpu=True)
+            out = model(data,maks,segment, gpu=True)
         else:
             out = model(data)
         true_sample_num += np.sum((torch.argmax(out, 1) == label).cpu().numpy())
@@ -161,9 +167,15 @@ for epoch in range(config.epoch):
 
         if config.cuda and torch.cuda.is_available():
             data = data.cuda()
+            maks = maks.cuda()
+            segment = segment.cuda()
+
             label = label.cuda()
         else:
             data = torch.autograd.Variable(data).long()
+            maks = torch.autograd.Variable(maks).long()
+            segment = torch.autograd.Variable(segment).long()
+
         label = torch.autograd.Variable(label).squeeze()
         if config.cuda and torch.cuda.is_available():
             out = model(data,maks,segment,gpu=True)
