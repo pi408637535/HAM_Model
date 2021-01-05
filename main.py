@@ -176,7 +176,7 @@ for epoch in range(config.epoch):
             maks = torch.autograd.Variable(maks).long()
             segment = torch.autograd.Variable(segment).long()
 
-        label = torch.autograd.Variable(label).squeeze()
+        label = torch.autograd.Variable(label).squeeze(dim=-1)
         if config.cuda and torch.cuda.is_available():
             out = model(data,maks,segment,gpu=True)
         else:

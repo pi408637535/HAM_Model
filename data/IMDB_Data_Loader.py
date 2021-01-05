@@ -7,7 +7,7 @@ import numpy as np
 from transformers import BertTokenizer
 import codecs
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, TensorDataset
-
+from tqdm import tqdm
 PAD,CLS,SEP = "[PAD]","[CLS]","[SEP]"
 
 class IMDB_Data(data.DataLoader):
@@ -150,8 +150,9 @@ if __name__=="__main__":
     tokenizer = BertTokenizer.from_pretrained(model_name_or_path)
     imdb_data = IMDB_Data(data_name="toutiao_article_score_train.txt", tokenizer=tokenizer, min_count=5)
     training_iter = torch.utils.data.DataLoader(dataset=imdb_data,
-                                                batch_size=4,
+                                                batch_size=2,
                                                 shuffle=False,
                                                 num_workers=0)
-    for data,maks,segment,label in training_iter:
-        print (np.array(data).shape, np.array(maks).shape, np.array(segment).shape,)
+    process_bar = tqdm(training_iter)
+    for step, (data, maks, segment, label) in enumerate(process_bar):
+        print (data.shape,label.shape)
