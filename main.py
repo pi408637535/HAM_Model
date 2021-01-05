@@ -207,8 +207,8 @@ for epoch in range(config.epoch):
             else:
                 torch.nn.utils.clip_grad_norm_(model.parameters(), config.max_grad_norm)
 
-            scheduler.step()  # Update learning rate schedule
             optimizer.step()
+            scheduler.step()  # Update learning rate schedule
             model.zero_grad()
             global_step += 1
             if config.local_rank in [-1, 0] and config.logging_steps > 0 and global_step % config.logging_steps == 0:
