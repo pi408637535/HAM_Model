@@ -181,6 +181,9 @@ for epoch in range(config.epoch):
             out = model(data,maks,segment,gpu=True)
         else:
             out = model(data,maks,segment)
+
+        logger.info("batch", out.shape, label.shape)
+
         loss_now = criterion(out, autograd.Variable(label.long()))
         if loss == -1:
             loss = loss_now.data.item()
